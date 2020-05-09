@@ -8,9 +8,10 @@ namespace Ocp.Demos.Consumers
     public static class TimerTriggerExample
     {
         [FunctionName("TimerTrigger")]
-        public static void Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("*/5 * * * * *", RunOnStartup=true)]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
     }
 }
+ 
