@@ -15,6 +15,17 @@
       "options": {
         "cwd": "${workspaceFolder}"
       }
-    }
+    },
+    {
+      "label": "clean",
+      "command": "dotnet",
+      "args": [
+        "clean",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "type": "process",
+      "problemMatcher": "$msCompile"
+    },
   ]
 } 
