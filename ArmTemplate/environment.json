@@ -10,6 +10,9 @@
     "app-insights-name": "[concat('ocp-webenv-ai', '-', toLower(parameters('environment-name')))]",
     "cloud-storage-name": "[concat('ocpwebenvstorage', toLower(parameters('environment-name')))]",
     "function-farm-name": "[concat('ocp-webenv-functionfarm-', toLower(parameters('environment-name')))]",
+    "function-cron-name": "[concat('ocp-webenv-func-cron', '-', toLower(parameters('environment-name')))]",
+    "function-http-name": "[concat('ocp-webenv-func-http', '-', toLower(parameters('environment-name')))]",
+    "function-sb-name": "[concat('ocp-webenv-func-sb', '-', toLower(parameters('environment-name')))]",
     "service-bus-name": "[concat('ocp-webenv-sb', '-', toLower(parameters('environment-name')))]"
   },
   "resources": [
@@ -21,14 +24,15 @@
       "sku": {
         "name": "Standard"
       },
-      "properties": {},
+      "properties": {
+      },
       "resources": [
         {
           "apiVersion": "2017-04-01",
           "name": "product-created",
-           "type": "topics",
-            "dependsOn": [
-              "[concat('Microsoft.ServiceBus/namespaces/', variables('service-bus-name'))]"
+          "type": "topics",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', variables('service-bus-name'))]"
           ],
           "properties": {
           },
@@ -56,11 +60,13 @@
       "sku": {
         "name": "Standard_LRS"
       },
-      "dependsOn": [],
+      "dependsOn": [
+      ],
       "tags": {
         "displayName": "[variables('cloud-storage-name')]"
       },
-      "resources": []
+      "resources": [
+      ]
     },
     {
       "type": "microsoft.insights/components",
@@ -68,11 +74,13 @@
       "name": "[variables('app-insights-name')]",
       "apiVersion": "2014-04-01",
       "location": "[resourceGroup().location]",
-      "tags": {},
+      "tags": {
+      },
       "properties": {
         "ApplicationId": "[variables('app-insights-name')]"
       },
-      "dependsOn": []
+      "dependsOn": [
+      ]
     },
     {
       "name": "[variables('function-farm-name')]",
@@ -80,10 +88,149 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-09-01",
       "properties": {
-        "computeMode":  "Dynamic"
+        "computeMode": "Dynamic"
       },
       "sku": {
         "name": "Y1"
+      }
+    },
+    {
+      "name": "[variables('function-cron-name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-08-01",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('cloud-storage-name'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "siteConfig": {
+          "alwaysOn": false,
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "SomeSchedule",
+              "value": "0 30 6 * * *"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('app-insights-name')), '2014-04-01').InstrumentationKey]"
+            },
+            {
+              "name": "WEBSITE_TIME_ZONE",
+              "value": "Pacific Standard Time"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('function-http-name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-08-01",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('cloud-storage-name'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "siteConfig": {
+          "alwaysOn": false,
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('app-insights-name')), '2014-04-01').InstrumentationKey]"
+            }
+          ],
+          "connectionStrings": [
+            {
+              "name": "OcpDb",
+              "connectionString": "Some DB Connection String",
+              "type": "SQLAzure"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('function-sb-name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-08-01",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('cloud-storage-name'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('function-farm-name'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('cloud-storage-name'), ';AccountKey=', listKeys(variables('cloud-storage-name'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('app-insights-name')), '2014-04-01').InstrumentationKey]"
+            },
+            {
+              "name": "ServiceBusConnectionString",
+              "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/authorizationRules'), variables('service-bus-name'), 'RootManageSharedAccessKey'),'2015-08-01').primaryConnectionString]"
+            },
+            {
+              "name": "WEBSITE_TIME_ZONE",
+              "value": "Pacific Standard Time"
+            }
+          ]
+        }
       }
     }
   ],
