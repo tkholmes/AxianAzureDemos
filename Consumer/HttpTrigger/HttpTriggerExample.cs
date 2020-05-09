@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Ocp.Demos.Consumer.HttpTrigger
+namespace Ocp.Demos.Consumers
 {
     public static class HttpTriggerExample
     {

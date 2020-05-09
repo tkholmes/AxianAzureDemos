@@ -7,12 +7,16 @@
       "path": "ArmTemplate"
     },
     {
-      "name": "Consumer/ServiceBusTrigger",
-      "path": "Consumer/ServiceBusTrigger"
+      "name": "Consumer/TimerTrigger",
+      "path": "Consumer/TimerTrigger"
     },
     {
       "name": "Consumer/HttpTrigger",
       "path": "Consumer/HttpTrigger"
+    },
+    {
+      "name": "Consumer/ServiceBusTrigger",
+      "path": "Consumer/ServiceBusTrigger"
     },
     {
       "name": "Producer/SendSBMessage",
