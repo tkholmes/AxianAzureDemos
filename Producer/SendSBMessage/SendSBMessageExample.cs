@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 
-namespace OCP.Demos.Producer.SendMesage
+namespace OCP.Demos.Producer
 {
     /*
       Hello World example that puts a message on a Service Bus Topic.
     */
-    class Program
+    class SendSBMessageExample
     {
         // Replace this with your SB connection string. Source from Azure. This would normally be pulled from config (seeded via ARM template or KeyVault [secret management]).
-        private const string ServiceBusConnectionString = "Endpoint=sb://ocp-webenv-sb-tyler.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EuteGnTIkSsnlv1qCoJ+AFO7h2ZAClBVeRNyQg37u34=";
+        private const string ServiceBusConnectionString = "Endpoint=sb://ocp-webenv-sb-tkh.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=hENtya1cp4fZMsHfb1EkrjxQB4zbx3kpECoEPQSakYM=";
 
         static void Main(string[] args)
         {
