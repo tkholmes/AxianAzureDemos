@@ -1,0 +1,92 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment-name": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "app-insights-name": "[concat('ocp-webenv-ai', '-', toLower(parameters('environment-name')))]",
+    "cloud-storage-name": "[concat('ocpwebenvstorage', toLower(parameters('environment-name')))]",
+    "function-farm-name": "[concat('ocp-webenv-functionfarm-', toLower(parameters('environment-name')))]",
+    "service-bus-name": "[concat('ocp-webenv-sb', '-', toLower(parameters('environment-name')))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-04-01",
+      "name": "[variables('service-bus-name')]",
+      "type": "Microsoft.ServiceBus/namespaces",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {},
+      "resources": [
+        {
+          "apiVersion": "2017-04-01",
+          "name": "product-created",
+           "type": "topics",
+            "dependsOn": [
+              "[concat('Microsoft.ServiceBus/namespaces/', variables('service-bus-name'))]"
+          ],
+          "properties": {
+          },
+          "resources": [
+            {
+              "apiVersion": "2017-04-01",
+              "name": "izzy-product-created",
+              "type": "Subscriptions",
+              "dependsOn": [
+                "product-created"
+              ],
+              "properties": {
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "[variables('cloud-storage-name')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "kind": "Storage",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "[variables('cloud-storage-name')]"
+      },
+      "resources": []
+    },
+    {
+      "type": "microsoft.insights/components",
+      "kind": "web",
+      "name": "[variables('app-insights-name')]",
+      "apiVersion": "2014-04-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "properties": {
+        "ApplicationId": "[variables('app-insights-name')]"
+      },
+      "dependsOn": []
+    },
+    {
+      "name": "[variables('function-farm-name')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-09-01",
+      "properties": {
+        "computeMode":  "Dynamic"
+      },
+      "sku": {
+        "name": "Y1"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
