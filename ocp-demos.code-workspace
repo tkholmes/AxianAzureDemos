@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "path": "Docs"
+    },
+    {
+      "path": "ArmTemplate"
+    },
+    {
+      "name": "Consumer/ServiceBusTrigger",
+      "path": "Consumer/ServiceBusTrigger"
+    },
+    {
+      "name": "Consumer/HttpTrigger",
+      "path": "Consumer/HttpTrigger"
+    },
+    {
+      "name": "Producer/SendSBMessage",
+      "path": "Producer/SendSBMessage"
+    }
+  ],
+  "settings": {
+    "debug.internalConsoleOptions": "neverOpen",
+    "files.exclude": {
+      "**/bin": true,
+      "**/obj": true
+    }
+  },
+  "launch": {
+    "configurations": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "command": "dotnet",
+        "args": [
+          "build",
+          "/property:GenerateFullPaths=true",
+          "/consoleloggerparameters:NoSummary"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/../"
+        },
+        "type": "process",
+        "dependsOn": "clean",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": "$msCompile"
+      }
+    ]
+  }
+}
