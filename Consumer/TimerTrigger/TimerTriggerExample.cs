@@ -12,6 +12,5 @@ namespace Ocp.Demos.Consumers
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
-    }
+    } 
 }
- 
