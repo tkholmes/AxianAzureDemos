@@ -44,7 +44,7 @@ $> az group deployment create -g ocp-webenv-YOURNAME --template-file ArmTemplate
 ## Examples
 
 ### Putting a Message on a Topic
-This example puts a message on a service bus topic. 
+This example puts a message on a service bus topic.
 
 - Open `SendSBMessageExample.cs` in `./Producer/SendSBMessage/SendSBMessageExample.cs` and replace the `ServiceBusConnectionString` with one from your own development environment (see Deploy ARM Template) above. Note that this console app puts a message on the `product-created` topic.
 - Run/Debug this by either:
@@ -104,3 +104,5 @@ These are activites that are being considered to better make this repository use
   - Tests (XUnit)
 - Add CI/CD 
 - Containerize this dev environment (see Dependencies section)
+- Add a Hybrid Connection to a known OCP resource
+- Add examples in another language (e.g. PHP)

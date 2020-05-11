@@ -1,0 +1,7 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "SOURCE FROM AZURE PORTAL",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+  }
+}
