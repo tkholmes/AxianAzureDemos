@@ -1,22 +1,22 @@
 # About
-This repo is intended to showcase toolchain examples and key moments when working with .NET Core, Azure Service Bus, and Functions on MacOS/Linux.
+This repository is intended to showcase toolchain examples and key moments when working with .NET Core, Azure Service Bus, and Functions on MacOS/Linux.
 
-# Dependencies
-We expect the following to be installed to correctly run these examples.  
-- [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)  
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-- [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=macos%2Ccsharp%2Cbash#v2)
-- [Visual Studio Code](https://code.visualstudio.com/download)  
-  - (Recommended Extension) [Azure Resource Manager (ARM) Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)
-  - (Recommended Extension) [C# for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
-- (Recommended) [Cerulean](https://www.cerebrata.com/products/cerulean/download) - Tool for inspecting Azure Service Bus or equivalent.
+# Workstation Dependencies
+This project makes use of Docker and VS Code to provide a portable and explicit environment to develop against and target deployments towards.
+
+Ensure you have the following installed on your workstation:
+- [Git Client](https://git-scm.com/downloads)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Visual Studio Code](https://code.visualstudio.com/download)
+  - [Remote Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- (Recommended) [Cerulean](https://www.cerebrata.com/products/cerulean/download) - Tool for inspecting Azure Service Bus topics/subscripitons/messages. 
 
 # Getting Started
-1. Clone this repository to your local workstation
-2. Install the dependencies listed above (see Dependencies)
-3. Test the above by building the solution (`CMD+Shift+B`, )
-3. Deploy the ARM template (see below)
-4. Navigate the examples in the section below. Consider activites like:
+1. Clone down this repository to your local workstation.
+2. Open the workspace file (`./Ocp.Demos.code-workspace`) in VS Code. The `Remote Containers` extension will notice the `.devcontainer/devcontainer.json` and attempt to build a container to house this environment. It will also open the workspace inside the container which is described by this project's `./.devcontainer/Dockerfile`.
+3. After the container builds (will take a few min), test the above by building the solution (`CMD+Shift+B`).
+4. Deploy the ARM template to create a personal resource group in Azure (see `Deploying ARM Template` below).
+5. Explore the examples in the section below. Consider activites like:
     - Putting a message in a topic, inspecting it in a subscription using a tool like [Cerulean](https://www.cerebrata.com/products/cerulean/download)
     - Debug/Consume a payload from either a Service Bus or Http Trigger
     - Deploy a function to Azure
