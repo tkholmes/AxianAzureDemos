@@ -23,7 +23,8 @@ Ensure you have the following installed on your workstation:
     - Execute/see output of functions running in Azure
 
 ## Deploying ARM Template
-1. Open a terminal and login to Azure CLI, select the correct subscription (if you have multiple). [video](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=542)
+1. Open a terminal and login to Azure CLI, select the correct subscription (if you have multiple). [[video]](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=542)
+
 Example:
 ```bash
 $> az login         // Associate this terminal session w/an Azure credential
@@ -44,7 +45,7 @@ $> az group deployment create -g ocp-webenv-YOURNAME --template-file ArmTemplate
 ## Examples
 
 ### Putting a Message on a Topic
-This example puts a message on a service bus topic. [video](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=1645)
+This example puts a message on a service bus topic. [[video]](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=1645)
 
 - Open `SendSBMessageExample.cs` in `./Producer/SendSBMessage/SendSBMessageExample.cs` and replace the `ServiceBusConnectionString` with one from your own development environment (see Deploy ARM Template) above. Note that this console app puts a message on the `product-created` topic.
 - Run/Debug this by either:
@@ -56,7 +57,7 @@ This example puts a message on a service bus topic. [video](https://web.microsof
   - `Modify & Resubmit` messages
 
 ### Consuming a Service Bus Message Locally with ServiceBusTriggerExample.cs
-This example consumes a message from the `izzy-product-created` subscription. Ensure a message exists in this subscription by running the example above.
+This example consumes a message from the `izzy-product-created` subscription [[video]](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=2181).  Ensure a message exists in this subscription by running the example above.
 
 - Open `ServicBusTriggerExample.cs` in `./Consumer/ServiceBusTrigger/ServiceBusTriggerExample.cs` and replace the `ConnectionString` and `AzureWebJobsStorage` settings in the related `local.settings.json`.
 - Set a breakpoint in `ServicBusTriggerExample.cs`.
