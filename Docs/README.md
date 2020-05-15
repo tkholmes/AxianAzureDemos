@@ -23,7 +23,7 @@ Ensure you have the following installed on your workstation:
     - Execute/see output of functions running in Azure
 
 ## Deploying ARM Template
-1. Open a terminal and login to Azure CLI, select the correct subscription (if you have multiple).
+1. Open a terminal and login to Azure CLI, select the correct subscription (if you have multiple). [video](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=542)
 Example:
 ```bash
 $> az login         // Associate this terminal session w/an Azure credential
@@ -44,7 +44,7 @@ $> az group deployment create -g ocp-webenv-YOURNAME --template-file ArmTemplate
 ## Examples
 
 ### Putting a Message on a Topic
-This example puts a message on a service bus topic.
+This example puts a message on a service bus topic. [video](https://web.microsoftstream.com/video/eb6d534e-fcdb-4205-b93d-1df2ea9ae806?st=1645)
 
 - Open `SendSBMessageExample.cs` in `./Producer/SendSBMessage/SendSBMessageExample.cs` and replace the `ServiceBusConnectionString` with one from your own development environment (see Deploy ARM Template) above. Note that this console app puts a message on the `product-created` topic.
 - Run/Debug this by either:
